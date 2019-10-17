@@ -1,10 +1,40 @@
 import csv
 import json
-
+import socket
+import select
+import sys
+import threading
+import time
 from bloque import bloque
 from bloque import nodoB
 from arbol import arbol
 
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+if len(sys.argv) != 3:
+	print ("Correct usage: script, IP address, port number")
+	exit()
+IP_address = str(sys.argv[1])
+Port = int(sys.argv[2])
+server.connect((IP_address, Port))
+
+def ser():
+    while True:
+
+        # maintains a list of possible input streams
+        read_sockets = select.select([server], [], [], 1)[0]
+        import msvcrt
+        if msvcrt.kbhit(): read_sockets.append(sys.stdin)
+
+        for socks in read_sockets:
+            if socks == server:
+                message = socks.recv(2048)
+                print (message.decode('utf-8'))
+            else:
+                message = sys.stdin.readline()
+                server.sendall(message.encode('utf-8'))
+                sys.stdout.write("<You>")
+                sys.stdout.write(message)
+                sys.stdout.flush()
 
 class aux:
     def __init__(self, arbol):
@@ -19,6 +49,9 @@ class aux:
 menu = 0
 index = 0
 lista = bloque()
+hilo = threading.Thread(target = ser)
+hilo.setDaemon(False)
+hilo.start()
 while menu < 4:
     print("1. INSERTAR BLOQUE")
     print("2. SELECCIONAR BLOQUE")
@@ -45,5 +78,4 @@ while menu < 4:
                 au = aux(ar)
                 au.recorrer(datos)
 
-            lista.agregarFinal(nodoB(index, nombre, ar, data))
-
+            lista.agrega4rFinal(nodoB(index, nombre, ar, data))
