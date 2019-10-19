@@ -52,6 +52,7 @@ lista = bloque()
 hilo = threading.Thread(target = ser)
 hilo.setDaemon(False)
 hilo.start()
+#hilo.join()
 while menu < 4:
     print("1. INSERTAR BLOQUE")
     print("2. SELECCIONAR BLOQUE")
@@ -67,6 +68,9 @@ while menu < 4:
                     nombre = row[1]
                 if row[0] == "data":
                    data = row[1]
+            #data = data + "{ \n"
+            #data = data + "\"\"index\"\":" + str(index) + ","
+            #data = data + "\"\"timestamp\"\":" +
             j = open(nombre+".json", "w")
             j.write(data)
             j.close()
@@ -74,8 +78,13 @@ while menu < 4:
             datosj = ""
             with open(nombre+".json") as contenido:
                 datos = json.load(contenido)
+                cadena = json.dumps(datos).replace(" ", "")
+                cadena = cadena.replace('\n', "")
+                p = open("prueba.txt", "w")
+                p.write(cadena)
+                p.close()
                 datosj = datos
                 au = aux(ar)
                 au.recorrer(datos)
 
-            lista.agrega4rFinal(nodoB(index, nombre, ar, data))
+            #lista.agregarFinal(nodoB(index, nombre, ar, data))
