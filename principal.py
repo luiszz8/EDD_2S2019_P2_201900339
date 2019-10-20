@@ -63,7 +63,10 @@ while menu < 4:
         nombre = ""
         data = ""
         auxT = ""
-        with open('datos.csv') as f:
+        print("Ingrese nombre archivo")
+        archivo = input()
+        archivo = "bloques/" + archivo
+        with open(archivo + '.csv') as f:
             reader = csv.reader(f)
             for row in reader:
                 if row[0] == "class":
@@ -93,21 +96,35 @@ while menu < 4:
 
 
                 data = data + "{"
-                data = data + "\"\"index\"\":" + str(index) + ","
-                data = data + "\"\"timestamp\"\":" + "\"\"" + time.strftime("%d") + "-" + time.strftime("%m") + "-" +time.strftime("%y") + "-::" + time.strftime("%X") + "\"\","
-                data = data + "\"\"class\"\":" + "\"\"" + nombre + "\"\","
-                data = data + "\"\"data\"\":" + auxT + ","
+                data = data + "\"index\":" + str(index) + ","
+                data = data + "\"timestamp\":" + "\"" + time.strftime("%d") + "-" + time.strftime("%m") + "-" +time.strftime("%y") + "-::" + time.strftime("%X") + "\","
+                data = data + "\"class\":" + "\"" + nombre + "\","
+                data = data + "\"data\":" + auxT + ","
                 hashanterior = ""
                 if lista.fin is not None:
-                    data = data + "\"\"previoushash\"\":" + "\"\"" + lista.fin.mhash + "\"\","
+                    data = data + "\"previoushash\":" + "\"" + lista.fin.mhash + "\","
                     hashanterior = lista.fin.mhash
                 else:
-                    data = data + "\"\"previoushash\"\":" + "\"\"" + "0000" + "\"\","
+                    data = data + "\"previoushash\":" + "\"" + "0000" + "\","
                     hashanterior = "0000"
                 m = hashlib.sha256()
                 m.update((str(index) + time.strftime("%d") + "-" + time.strftime("%m") + "-" +time.strftime("%y") + "-::" + time.strftime("%X") + nombre + auxT + hashanterior).encode('utf-8'))
-                data = data + "\"\"hash\"\":" + "\"\"" + m.hexdigest() + "\"\"}"
+                data = data + "\"hash\":" + "\"" + m.hexdigest() + "\"}"
                 server.sendall(data.encode('utf-8'))
+                #prueba
+                jason = open("verj.json", "w")
+                jason.write(data)
+                jason.close()
+                with open("verj.json") as enviado:
+                    datosE = json.load(enviado)
+                    #print(datosE['index'])
+                    print(datosE)
+                    h = hashlib.sha256()
+                    cadenahash = json.dumps(datosE['data']).replace(" ", "")
+                    cadenahash = cadenahash.replace("\n", "")
+                    h.update((json.dumps(datosE['index']).replace("\"","")+json.dumps(datosE['timestamp']).replace("\"","")+json.dumps(datosE['class']).replace("\"","")+cadenahash+json.dumps(datosE['previoushash']).replace("\"","")).encode('utf-8'))
+                    #print(json.dumps(datosE['index']).replace("\"","")+json.dumps(datosE['timestamp']).replace("\"","")+json.dumps(datosE['class']).replace("\"","")+cadenahash+json.dumps(datosE['previoushash']).replace("\"",""))
+                    print(h.hexdigest())
                 """j = open(nombre+".json", "w")
                 j.write(data)
                 j.close()
