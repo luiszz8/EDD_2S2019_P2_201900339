@@ -94,7 +94,8 @@ while menu < 4:
     print("2. SELECCIONAR BLOQUE")
     print("3. REPORTES")
 
-    try:
+    #try:
+    if True:
         menu = int(input())
         if menu == 1:
             nombre = ""
@@ -219,9 +220,18 @@ while menu < 4:
                         if nodoCambiante.sig is not None:
                             nodoCambiante = nodoCambiante.sig
                     if letra is "w":
-                        nodoReporte = nodoCambiante
+                        nodoReporte = nodoCambiante.data
                     os.system("cls")
         if menu == 3:
-            lista.graficar()
-    except:
-        continue
+            submenu = 1
+            while submenu < 4:
+                print("1. BLOCKCHAIN REPORT")
+                print("2. ARBOL")
+                print("3. Recorridos")
+                submenu = int(input())
+                if submenu == 1:
+                    lista.graficar()
+                if submenu == 2:
+                    nodoReporte.grafo()
+    #except:
+        #continue

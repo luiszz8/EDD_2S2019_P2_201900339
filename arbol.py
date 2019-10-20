@@ -1,3 +1,6 @@
+import os
+
+
 class nodoA:
     def __init__(self,carnet,nombre):
         self.carnet = carnet
@@ -128,3 +131,26 @@ class arbol:
         while(curr_node.padre is not None):
             curr_node = curr_node.padre
             curr_node.altura = curr_node.altura + 1
+
+    def graficar(self, curr_node):
+        datos = ""
+        if curr_node is not None:
+            if curr_node.izq is not None:
+                datos = datos + "\"" +str(curr_node.carnet) + curr_node.nombre + str(curr_node.fe) + "\""
+                datos = datos + "->" + "\"" + str(curr_node.izq.carnet) + curr_node.izq.nombre + str(curr_node.izq.fe) + "\"" + ";"
+            if curr_node.der is not None:
+                datos = datos + "\"" + str(curr_node.carnet) + curr_node.nombre + str(curr_node.fe) + "\""
+                datos = datos + "->" + "\"" + str(curr_node.der.carnet) + curr_node.der.nombre + str(curr_node.der.fe) + "\"" + ";"
+            datos = datos + self.graficar(curr_node.izq)
+            datos = datos + self.graficar(curr_node.der)
+        return datos
+
+    def grafo(self):
+        datos = "digraph BST {"
+        datos = datos + self.graficar(self.raiz)
+        datos = datos +"}"
+        f = open("otro.dot", "w")
+        f.write(datos)
+        f.close()
+        os.system("dot -Tjpg otro.dot -o arbol.jpg")
+        os.system("arbol.jpg")
