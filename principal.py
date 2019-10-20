@@ -1,4 +1,5 @@
 import csv
+import hashlib
 import json
 import socket
 import select
@@ -61,30 +62,69 @@ while menu < 4:
     if menu == 1:
         nombre = ""
         data = ""
+        auxT = ""
         with open('datos.csv') as f:
             reader = csv.reader(f)
             for row in reader:
                 if row[0] == "class":
                     nombre = row[1]
                 if row[0] == "data":
-                   data = row[1]
-            #data = data + "{ \n"
-            #data = data + "\"\"index\"\":" + str(index) + ","
-            #data = data + "\"\"timestamp\"\":" +
-            j = open(nombre+".json", "w")
-            j.write(data)
+                   auxT = row[1]
+            j = open(nombre + ".json", "w")
+            j.write(auxT)
             j.close()
-            ar = arbol()
+            # ar = arbol()
             datosj = ""
-            with open(nombre+".json") as contenido:
+            auxT = auxT.replace(" ","")
+            auxT = auxT.replace("\n", "")
+            with open(nombre + ".json") as contenido:
                 datos = json.load(contenido)
                 cadena = json.dumps(datos).replace(" ", "")
                 cadena = cadena.replace('\n', "")
-                p = open("prueba.txt", "w")
-                p.write(cadena)
-                p.close()
+                fincadena = cadena
+                #m = hashlib.sha256()
+                #m.update(cadena.encode('utf-8'))
+                #p = open("prueba.txt", "w")
+                #p.write(cadena)
+                #p.close()
                 datosj = datos
-                au = aux(ar)
-                au.recorrer(datos)
+                #au = aux(ar)
+                #au.recorrer(datos)
 
-            #lista.agregarFinal(nodoB(index, nombre, ar, data))
+
+                data = data + "{"
+                data = data + "\"\"index\"\":" + str(index) + ","
+                data = data + "\"\"timestamp\"\":" + "\"\"" + time.strftime("%d") + "-" + time.strftime("%m") + "-" +time.strftime("%y") + "-::" + time.strftime("%X") + "\"\","
+                data = data + "\"\"class\"\":" + "\"\"" + nombre + "\"\","
+                data = data + "\"\"data\"\":" + auxT + ","
+                hashanterior = ""
+                if lista.fin is not None:
+                    data = data + "\"\"previoushash\"\":" + "\"\"" + lista.fin.mhash + "\"\","
+                    hashanterior = lista.fin.mhash
+                else:
+                    data = data + "\"\"previoushash\"\":" + "\"\"" + "0000" + "\"\","
+                    hashanterior = "0000"
+                m = hashlib.sha256()
+                m.update((str(index) + time.strftime("%d") + "-" + time.strftime("%m") + "-" +time.strftime("%y") + "-::" + time.strftime("%X") + nombre + auxT + hashanterior).encode('utf-8'))
+                data = data + "\"\"hash\"\":" + "\"\"" + m.hexdigest() + "\"\"}"
+                server.sendall(data.encode('utf-8'))
+                """j = open(nombre+".json", "w")
+                j.write(data)
+                j.close()
+                #ar = arbol()
+                datosj = ""
+                with open(nombre+".json") as contenido:
+                    datos = json.load(contenido)
+                    cadena = json.dumps(datos).replace(" ", "")
+                    cadena = cadena.replace('\n', "")
+                    m = hashlib.sha256()
+                    m.update(cadena.encode('utf-8'))
+                    print(m.hexdigest())
+                    p = open("prueba.txt", "w")
+                    p.write(cadena)
+                    p.close()
+                    datosj = datos
+                    au = aux(ar)
+                    au.recorrer(datos)"""
+
+                #lista.agregarFinal(nodoB(index, nombre, ar, data))
