@@ -1,6 +1,7 @@
 import csv
 import hashlib
 import json
+import os
 import socket
 import select
 import sys
@@ -76,7 +77,7 @@ while menu < 4:
             j = open(nombre + ".json", "w")
             j.write(auxT)
             j.close()
-            # ar = arbol()
+            ar = arbol()
             datosj = ""
             auxT = auxT.replace(" ","")
             auxT = auxT.replace("\n", "")
@@ -124,7 +125,11 @@ while menu < 4:
                     cadenahash = cadenahash.replace("\n", "")
                     h.update((json.dumps(datosE['index']).replace("\"","")+json.dumps(datosE['timestamp']).replace("\"","")+json.dumps(datosE['class']).replace("\"","")+cadenahash+json.dumps(datosE['previoushash']).replace("\"","")).encode('utf-8'))
                     #print(json.dumps(datosE['index']).replace("\"","")+json.dumps(datosE['timestamp']).replace("\"","")+json.dumps(datosE['class']).replace("\"","")+cadenahash+json.dumps(datosE['previoushash']).replace("\"",""))
-                    print(h.hexdigest())
+                    #print(h.hexdigest())
+                    index = index + 1
+                    au = aux(ar)
+                    au.recorrer(datos)
+                    lista.agregarFinal(nodoB(datosE['index'], json.dumps(datosE['timestamp']).replace("\"",""), json.dumps(datosE['class']).replace("\"",""), ar, cadenahash, json.dumps(datosE['previoushash']).replace("\"",""), json.dumps(datosE['hash']).replace("\"","")))
                 """j = open(nombre+".json", "w")
                 j.write(data)
                 j.close()
@@ -145,3 +150,23 @@ while menu < 4:
                     au.recorrer(datos)"""
 
                 #lista.agregarFinal(nodoB(index, nombre, ar, data))
+    if menu == 2:
+        if lista.inicio is not None:
+            os.system("cls")
+            nodoCambiante = lista.inicio
+            letra = "f"
+            while letra is not "s":
+                print(nodoCambiante.index)
+                print(nodoCambiante.timet)
+                print(nodoCambiante.clase)
+                print(nodoCambiante.datos[0:50])
+                print(nodoCambiante.phash)
+                print(nodoCambiante.mhash)
+                letra = input()
+                if letra is "a":
+                    if nodoCambiante.ant is not None:
+                        nodoCambiante = nodoCambiante.ant
+                if letra is "d":
+                    if nodoCambiante.sig is not None:
+                        nodoCambiante = nodoCambiante.sig
+                os.system("cls")
