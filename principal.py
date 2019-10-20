@@ -21,6 +21,7 @@ Port = int(sys.argv[2])
 server.connect((IP_address, Port))
 arbolT = arbol()
 nodoTem = None
+nodoReporte = None
 def ser():
     while True:
 
@@ -131,7 +132,7 @@ while menu < 4:
                     # au.recorrer(datos)
 
                     data = data + "{"
-                    data = data + "\"index\":" + str(index) + ","
+                    data = data + "\"index\":" + str(lista.tamayo) + ","
                     data = data + "\"timestamp\":" + "\"" + time.strftime("%d") + "-" + time.strftime(
                         "%m") + "-" + time.strftime("%y") + "-::" + time.strftime("%X") + "\","
                     data = data + "\"class\":" + "\"" + nombre + "\","
@@ -149,7 +150,7 @@ while menu < 4:
                     data = data + "\"hash\":" + "\"" + m.hexdigest() + "\"}"
                     server.sendall(data.encode('utf-8'))
                     # prueba
-                    """jason = open("verj.json", "w")
+                    jason = open("verj.json", "w")
                     jason.write(data)
                     jason.close()
                     with open("verj.json") as enviado:
@@ -169,12 +170,16 @@ while menu < 4:
                                                  json.dumps(datosE['class']).replace("\"", ""), ar, cadenahash,
                                                  json.dumps(datosE['previoushash']).replace("\"", ""),
                                                  json.dumps(datosE['hash']).replace("\"", "")))
+                        """lista.agregarFinal(nodoB(1, json.dumps(datosE['timestamp']).replace("\"", ""),
+                                                 json.dumps(datosE['class']).replace("\"", ""), ar, cadenahash,
+                                                 json.dumps(datosE['previoushash']).replace("\"", ""),
+                                                 json.dumps(datosE['hash']).replace("\"", "")))"""
                         #print(h.hexdigest())
                         #print(json.dumps(datosE['hash']).replace("\"", ""))
                         if h.hexdigest() == json.dumps(datosE['hash']).replace("\"", ""):
                             #print("si entra")
                             server.sendall("true".encode('utf-8'))
-                    j = open(nombre+".json", "w")
+                    """j = open(nombre+".json", "w")
                     j.write(data)
                     j.close()
                     #ar = arbol()
@@ -213,6 +218,10 @@ while menu < 4:
                     if letra is "d":
                         if nodoCambiante.sig is not None:
                             nodoCambiante = nodoCambiante.sig
+                    if letra is "w":
+                        nodoReporte = nodoCambiante
                     os.system("cls")
+        if menu == 3:
+            lista.graficar()
     except:
         continue
