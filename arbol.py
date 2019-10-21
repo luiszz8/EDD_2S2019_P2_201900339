@@ -123,9 +123,23 @@ class arbol:
 
     def preorder(self, curr_node):
         if curr_node is not None:
-            print(curr_node.carnet, end=" ")
+            print(curr_node.nombre, end=" ")
             self.preorder(curr_node.izq)
             self.preorder(curr_node.der)
+
+    def posorder(self, curr_node):
+        if curr_node is not None:
+            self.posorder(curr_node.izq)
+            self.posorder(curr_node.der)
+            print(curr_node.nombre, end=" ")
+
+    def inorder(self, curr_node):
+        if curr_node is not None:
+            self.inorder(curr_node.izq)
+            print(curr_node.nombre, end=" ")
+            self.inorder(curr_node.der)
+
+
 
     def alturas(self, curr_node):
         while(curr_node.padre is not None):
@@ -176,6 +190,7 @@ class arbol:
         f.close()
         os.system("dot -Tjpg otro.dot -o pre.jpg")
         os.system("pre.jpg")
+        self.preorder(self.raiz)
 
     def graficarPos(self,curr_node):
         datos= ""
@@ -200,6 +215,7 @@ class arbol:
         f.close()
         os.system("dot -Tjpg otro.dot -o pos.jpg")
         os.system("pos.jpg")
+        self.posorder(self.raiz)
 
     def graficarIn(self,curr_node):
         datos= ""
@@ -225,4 +241,5 @@ class arbol:
         f.close()
         os.system("dot -Tjpg otro.dot -o In.jpg")
         os.system("In.jpg")
+        self.inorder(self.raiz)
 

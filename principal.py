@@ -29,17 +29,12 @@ def ser():
         read_sockets = select.select([server], [], [], 1)[0]
         import msvcrt
         if msvcrt.kbhit(): read_sockets.append(sys.stdin)
-        try:
-            message = socks.recv(2048)
-            print(message.decode('utf-8'))
-        except:
-            continue
         for socks in read_sockets:
             if socks == server:
                 message = socks.recv(2048)
                 print(message.decode('utf-8'))
                 if message.decode('utf-8') != "true" and message.decode('utf-8') != "false":
-                    if message.decode('utf-8') != "Welcome to [EDD]Blockchain Project":
+                    if message.decode('utf-8') != "Welcome to [EDD]Blockchain Project!":
                         jason = open("verj.json", "w")
                         jason.write(message.decode('utf-8'))
                         jason.close()
@@ -151,7 +146,7 @@ while menu < 4:
                     data = data + "\"hash\":" + "\"" + m.hexdigest() + "\"}"
                     server.sendall(data.encode('utf-8'))
                     # prueba
-                    jason = open("verj.json", "w")
+                    """jason = open("verj.json", "w")
                     jason.write(data)
                     jason.close()
                     with open("verj.json") as enviado:
@@ -171,16 +166,16 @@ while menu < 4:
                                                  json.dumps(datosE['class']).replace("\"", ""), ar, cadenahash,
                                                  json.dumps(datosE['previoushash']).replace("\"", ""),
                                                  json.dumps(datosE['hash']).replace("\"", "")))
-                        """lista.agregarFinal(nodoB(1, json.dumps(datosE['timestamp']).replace("\"", ""),
+                        lista.agregarFinal(nodoB(1, json.dumps(datosE['timestamp']).replace("\"", ""),
                                                  json.dumps(datosE['class']).replace("\"", ""), ar, cadenahash,
                                                  json.dumps(datosE['previoushash']).replace("\"", ""),
-                                                 json.dumps(datosE['hash']).replace("\"", "")))"""
+                                                 json.dumps(datosE['hash']).replace("\"", "")))
                         #print(h.hexdigest())
                         #print(json.dumps(datosE['hash']).replace("\"", ""))
                         if h.hexdigest() == json.dumps(datosE['hash']).replace("\"", ""):
                             #print("si entra")
                             server.sendall("true".encode('utf-8'))
-                    """j = open(nombre+".json", "w")
+                    j = open(nombre+".json", "w")
                     j.write(data)
                     j.close()
                     #ar = arbol()
