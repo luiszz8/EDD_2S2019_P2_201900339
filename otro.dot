@@ -1,0 +1,4 @@
+digraph G {
+node[shape = record, width = 2.3, height = 0.6];
+rankdir = LR;
+"201005874Estudiante1"->"201313526Alan"->"201403525Nery"->"201403624Fernando"->"201403819Anne"->"201602255Estudiante2"}
