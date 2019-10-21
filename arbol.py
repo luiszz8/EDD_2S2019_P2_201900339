@@ -201,3 +201,28 @@ class arbol:
         os.system("dot -Tjpg otro.dot -o pos.jpg")
         os.system("pos.jpg")
 
+    def graficarIn(self,curr_node):
+        datos= ""
+        if curr_node is not None:
+            if curr_node.izq is not None:
+                datos = datos + self.graficarIn(curr_node.izq)
+            datos = datos + "\"" + str(curr_node.carnet) + curr_node.nombre + "\"" + "->"
+            if curr_node.der is not None:
+                datos = datos + self.graficarIn(curr_node.der)
+
+
+
+        return datos
+
+    def grafoIn(self):
+        datos = "digraph G {\n"
+        datos = datos + "node[shape = record, width = 2.3, height = 0.6];\n"
+        datos = datos + "rankdir = LR;\n"
+        datos = datos + self.graficarIn(self.raiz)[0:(len(self.graficarIn(self.raiz))-2)]
+        datos = datos + "}"
+        f = open("otro.dot", "w")
+        f.write(datos)
+        f.close()
+        os.system("dot -Tjpg otro.dot -o In.jpg")
+        os.system("In.jpg")
+
