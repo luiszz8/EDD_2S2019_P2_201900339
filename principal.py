@@ -237,5 +237,7 @@ while menu < 4:
                     nodoReporte.grafo()
                 if submenu == 3:
                     nodoReporte.grafoPre()
+                if submenu == 4:
+                    nodoReporte.grafoPos()
     #except:
         #continue

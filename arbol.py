@@ -177,3 +177,27 @@ class arbol:
         os.system("dot -Tjpg otro.dot -o pre.jpg")
         os.system("pre.jpg")
 
+    def graficarPos(self,curr_node):
+        datos= ""
+        if curr_node is not None:
+            if curr_node.izq is not None:
+                datos = datos + self.graficarPos(curr_node.izq) + "->"
+            if curr_node.der is not None:
+                datos = datos + self.graficarPos(curr_node.der) + "->"
+            datos = datos +"\"" + str(curr_node.carnet) + curr_node.nombre + "\""
+
+
+        return datos
+
+    def grafoPos(self):
+        datos = "digraph G {\n"
+        datos = datos + "node[shape = record, width = 2.3, height = 0.6];\n"
+        datos = datos + "rankdir = LR;\n"
+        datos = datos + self.graficarPos(self.raiz)
+        datos = datos + "}"
+        f = open("otro.dot", "w")
+        f.write(datos)
+        f.close()
+        os.system("dot -Tjpg otro.dot -o pos.jpg")
+        os.system("pos.jpg")
+
