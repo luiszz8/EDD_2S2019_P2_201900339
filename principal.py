@@ -224,14 +224,18 @@ while menu < 4:
                     os.system("cls")
         if menu == 3:
             submenu = 1
-            while submenu < 4:
+            while submenu < 6:
                 print("1. BLOCKCHAIN REPORT")
                 print("2. ARBOL")
-                print("3. Recorridos")
+                print("3. Preorden")
+                print("4. Posorden")
+                print("5. Inorden")
                 submenu = int(input())
                 if submenu == 1:
                     lista.graficar()
                 if submenu == 2:
                     nodoReporte.grafo()
+                if submenu == 3:
+                    nodoReporte.grafoPre()
     #except:
         #continue

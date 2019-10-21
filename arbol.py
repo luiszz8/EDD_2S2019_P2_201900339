@@ -154,3 +154,26 @@ class arbol:
         f.close()
         os.system("dot -Tjpg otro.dot -o arbol.jpg")
         os.system("arbol.jpg")
+
+    def graficarPre(self,curr_node):
+        datos= ""
+        if curr_node is not None:
+            datos = "\"" + str(curr_node.carnet) + curr_node.nombre + "\""
+            if curr_node.izq is not None:
+                datos = datos + "->" + self.graficarPre(curr_node.izq)
+            if curr_node.der is not None:
+                datos = datos + "->" + self.graficarPre(curr_node.der)
+        return datos
+
+    def grafoPre(self):
+        datos = "digraph G {\n"
+        datos = datos + "node[shape = record, width = 2.3, height = 0.6];\n"
+        datos = datos + "rankdir = LR;\n"
+        datos = datos + self.graficarPre(self.raiz)
+        datos = datos + "}"
+        f = open("otro.dot", "w")
+        f.write(datos)
+        f.close()
+        os.system("dot -Tjpg otro.dot -o pre.jpg")
+        os.system("pre.jpg")
+
